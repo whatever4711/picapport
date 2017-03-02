@@ -2,11 +2,11 @@ FROM <IMAGE>
 <QEMU>
 
 ENV PICAPPORT_PORT=80 \
-    PICAPPORT_VERSION="v6.3.05"
+    PICAPPORT_VERSION="6-3-05"
 
 RUN apk add --update --no-cache tini openjdk8 curl && \
     mkdir -p /opt/picapport && \
-    curl -SsL -o /opt/picapport/picapport-headless.jar http://picapport.de/prepare_download_headless_jar-${PICAPPORT_VERSION}.php && \
+    curl -SsL -o /opt/picapport/picapport-headless.jar http://www.picapport.de/download/${PICAPPORT_VERSION}/picapport-headless.jar && \
     mkdir /opt/picapport/.picapport && \
     printf "%s\n%s\n%s\n" "server.port=$PICAPPORT_PORT" "irobot.root.0.path=/srv/photos" "foto.jpg.usecache=2" > /opt/picapport/.picapport/picapport.properties
 
