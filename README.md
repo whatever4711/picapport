@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/whatever4711/picapport.svg?branch=master)](https://travis-ci.org/whatever4711/picapport) [![](https://images.microbadger.com/badges/version/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/picapport:amd64.svg)](https://microbadger.com/images/whatever4711/picapport:amd64 "Get your own image badge on microbadger.com")
+[![Build Status](https://travis-ci.org/whatever4711/picapport.svg?branch=master)](https://travis-ci.org/whatever4711/picapport) [![](https://images.microbadger.com/badges/version/whatever4711/picapport:amd64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:amd64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/picapport:amd64.svg)](https://microbadger.com/images/whatever4711/picapport:amd64 "Get your own image badge on microbadger.com")
 
 # Picapport in a Container
 
@@ -19,10 +19,28 @@ foto.jpg.cache.path=/srv/cache
 ```
 In this file we specified, e.g., the path for picapport to search for the pictures inside the docker container, and the path, where all cached photos are stored.
 
-### Mounting Volumes
+## Mounting Volumes
 
 - Mount your configuration with: `-v $PWD/config:/opt/picapport/.picapport`
-- Mount your photos with: `-v /path/to/fotos:/srv/photos`
+- Mount your photos with: `-v /path/to/your/fotos:/srv/photos`
 - Eventually mount the cache with `-v /path/to/cache:/srv/cache`
 
 `docker run -d --name picapport -p 8080:80 -v $PWD/config:/opt/picapport/.picapport -v /path/to/fotos:/srv/photos -v /path/to/cache:/srv/cache whatever4711/rpi-picapport`
+
+## Easier setup with docker-compose
+```YAML
+version: '3'
+
+services:
+  picapport:
+    image: whatever4711/picapport:amd64-latest
+    restart: always
+    expose:
+      - 80
+    networks:
+      - backend
+    volumes:
+      - /path/to/your/configuration:/opt/picapport/.picapport
+      - /path/to/your/fotos:/srv/photos
+```
+Run it with `docker-compose up -d`
