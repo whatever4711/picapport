@@ -1,0 +1,22 @@
+version: '2'
+
+networks:
+  backend:
+    external:
+      name: rpicaddy_backend
+
+services:
+  picapport:
+    image: whatever4711/picapport:armhf-v6.3.03
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - 80
+    networks:
+      - backend
+    volumes:
+      - ./config:/opt/picapport/.picapport
+      - /home/public/NAS/picapport cache:/srv/cache
+      - /home/public/NAS/Shared Pictures:/srv/photos
