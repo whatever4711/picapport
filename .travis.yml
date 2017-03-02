@@ -9,7 +9,6 @@ script:
 
 after_success:
   - docker images
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - make push
   - make clean
   - curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
