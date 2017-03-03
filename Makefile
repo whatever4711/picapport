@@ -1,4 +1,4 @@
-ARCHITECTURES = arm aarch64
+ARCHITECTURES = armhf aarch64
 QEMU_STATIC = https://github.com/multiarch/qemu-user-static/releases/download/v2.8.0
 IMAGE = alpine:3.5
 MULTIARCH = multiarch/qemu-user-static:register
@@ -24,7 +24,7 @@ $(ARCHITECTURES):
 	@curl -L -o $(TMP_DIR)/qemu-$@-static.tar.gz $(QEMU_STATIC)/qemu-$@-static.tar.gz
 	@tar xzf $(TMP_DIR)/qemu-$@-static.tar.gz -C $(TMP_DIR)
 	@sed -e "s|<IMAGE>|$@/$(IMAGE)|g" -e "s|<QEMU>|COPY $(TMP_DIR)/qemu-$@-static /usr/bin/qemu-$@-static|g" Dockerfile.generic > $(TMP_DOCKERFILE)
-	@sed -i -e "s|arm/$(IMAGE)|armhf/$(IMAGE)|g" $(TMP_DOCKERFILE)
+	@sed -i -e "s|/usr/bin/qemu-armhf-static|/usr/bin/qemu-arm-static|g" $(TMP_DOCKERFILE)
 	@docker run --rm --privileged $(MULTIARCH) --reset
 	@docker build -f $(TMP_DOCKERFILE) -t $(REPO):$@-$(TAG) .
 	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
