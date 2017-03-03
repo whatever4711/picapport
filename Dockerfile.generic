@@ -1,7 +1,8 @@
 FROM <IMAGE>
 <QEMU>
 
-ENV PICAPPORT_PORT=80 \
+ENV ARCH=<ARCH> \
+    PICAPPORT_PORT=80 \
     PICAPPORT_VERSION="6-3-05"
 
 RUN apk add --update --no-cache tini openjdk8 curl && \
@@ -16,3 +17,7 @@ EXPOSE ${PICAPPORT_PORT}
 #ENTRYPOINT ["java", "-DTRACE=INFO", "-Duser.home=/opt/picapport", "-cp", "picapport.jar", "de.contecon.picapport.PicApport", "-configfile=/opt/picapport/.picapport/picapport.properties", "-pgui.enabled=false"]
 
 ENTRYPOINT ["tini", "--", "java", "-Xms256m", "-Xmx512m", "-Duser.home=/opt/picapport", "-jar", "picapport-headless.jar"]
+
+LABEL version=${PICAPPORT_VERSION} \
+    architecture=${ARCH} \
+    maintainer="whatever4711@gmail.com"
