@@ -11,8 +11,8 @@
 Currently, this is a docker image based on the rpi-java image (whatever4711/rpi-java) and has [Picapport](http://www.picapport.de/) installed.
 
 ## Starting the container
-`docker run -d --name picapport -p 8080:80 whatever4711/rpi-picapport`
-Thereafter you can access picapport on http://ip-pi:8080
+`docker run -d --name picapport -p 8080:80 whatever4711/picapport:amd64-latest`
+Thereafter you can access picapport on http://localhost:8080
 
 ## Specifying Custom Configurations
 
