@@ -4,7 +4,7 @@ services:
 language: bash
 script:
 - export REPO=whatever4711/picapport
-- make amd64
+- make all
 - docker images
 after_success:
 - docker images
