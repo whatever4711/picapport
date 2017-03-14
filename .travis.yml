@@ -12,5 +12,8 @@ after_success:
 - make clean
 - curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
 notifications:
+  email: false
   slack:
-    secure: ${SLACK}
+    on_success: always
+    on_failure: change
+    secure: $SLACK
