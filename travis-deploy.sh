@@ -8,7 +8,6 @@ else
 fi
 
 image="whatever4711/picapport"
-docker tag picapport "$image:linux-$ARCH-$tag"
 docker push "$image:linux-$ARCH-$tag"
 
 if [ "$ARCH" == "amd64" ]; then

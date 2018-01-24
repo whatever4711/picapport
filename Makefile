@@ -34,7 +34,7 @@ $(ARCHITECTURES):
 			--build-arg VCS_REF=$(shell git rev-parse --short HEAD) \
 			--build-arg VCS_URL=$(shell git config --get remote.origin.url) \
 			--build-arg VERSION=$(VERSION) \
-			-f $(TMP_DOCKERFILE) -t $(REPO):$@-$(TAG) .
+			-f $(TMP_DOCKERFILE) -t $(REPO):linux-$@-$(TAG) .
 	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
 
 push:
