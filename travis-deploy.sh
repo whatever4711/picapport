@@ -18,11 +18,6 @@ if [ "$ARCH" == "amd64" ]; then
     sleep 15
     echo "Try again"
   done
-  until docker run --rm stefanscherer/winspector "$image:linux-arm32v7-$tag"
-  do
-    sleep 15
-    echo "Try again"
-  done
   until docker run --rm stefanscherer/winspector "$image:linux-arm64v8-$tag"
   do
     sleep 15
@@ -42,10 +37,8 @@ if [ "$ARCH" == "amd64" ]; then
   ./docker -D manifest create "$image:$tag" \
     "$image:linux-amd64-$tag" \
     "$image:linux-arm32v6-$tag" \
-    "$image:linux-arm32v7-$tag" \
     "$image:linux-arm64v8-$tag"
   ./docker manifest annotate "$image:$tag" "$image:linux-arm32v6-$tag" --os linux --arch arm --variant v6
-  ./docker manifest annotate "$image:$tag" "$image:linux-arm32v7-$tag" --os linux --arch arm --variant v7
   ./docker manifest annotate "$image:$tag" "$image:linux-arm64v8-$tag" --os linux --arch arm64 --variant v8
   ./docker manifest push "$image:$tag"
 fi
