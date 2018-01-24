@@ -1,27 +1,37 @@
-sudo: required
-services:
-- docker
-env:
-  global:
-    - REPO=whatever4711/picapport
-  matrix:
-    - ARCH=arm32v6
-    - ARCH=arm64v8
-    - ARCH=amd64
-script:
-  - ./travis-build.sh
-  - ./travis-test.sh
-  - >
-    if [ "$TRAVIS_BRANCH" == "master" ]; then
-      # push image
-      travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
-      ./travis-deploy.sh
-    fi
-# after_success:
-# - docker images
-# - make push
-# - make clean
-# - curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
+sudo: true
+dist: trusty
+
+jobs:
+  include:
+    - stage: build multiarch Docker images
+      script:
+        - ./travis-build.sh
+
+    - stage: generate Docker manifest
+
+# services:
+# - docker
+# env:
+#   global:
+#     - REPO=whatever4711/picapport
+#   matrix:
+#     - ARCH=arm32v6
+#     - ARCH=arm64v8
+#     - ARCH=amd64
+# script:
+#   - ./travis-build.sh
+#   - ./travis-test.sh
+#   - >
+#     if [ "$TRAVIS_BRANCH" == "master" ]; then
+#       # push image
+#       travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
+#       ./travis-deploy.sh
+#     fi
+#  after_success:
+# # - docker images
+# # - make push
+# # - make clean
+#  - curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
 # notifications:
 #   email: false
 #   slack:
