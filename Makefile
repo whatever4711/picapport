@@ -46,5 +46,5 @@ clean:
 	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
 
 define convert_archs
-	$(shell echo $(1) | sed -e "s|armhf|arm|g" -e "s|amd64|x86_64|g")
+	$(shell echo $(1) | sed -e "s|arm32.*|arm|g" -e "s|arm64.*|aarch64|g" -e "s|amd64|x86_64|g")
 endef
