@@ -3,8 +3,9 @@ services:
 - docker
 env:
   matrix:
-    - ARCH=arm
-    - ARCH=arm64
+    - ARCH=arm32v6
+    - ARCH=arm32v7
+    - ARCH=arm64v8
     - ARCH=amd64
 script:
   - ./travis-build.sh
