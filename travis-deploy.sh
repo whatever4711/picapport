@@ -2,12 +2,12 @@
 set -e
 
 if [[ "$TRAVIS_TAG" ]]; then
-  tag=$TRAVIS_TAG
+  tag="$TRAVIS_TAG"
 else
   tag=latest
 fi
 
-image="whatever4711/picapport"
+image="$REPO"
 docker push "$image:linux-$ARCH-$tag"
 
 if [ "$ARCH" == "amd64" ]; then

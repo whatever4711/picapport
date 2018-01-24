@@ -6,7 +6,6 @@ env:
     - REPO=whatever4711/picapport
   matrix:
     - ARCH=arm32v6
-    - ARCH=arm32v7
     - ARCH=arm64v8
     - ARCH=amd64
 script:
