@@ -1,13 +1,9 @@
-FROM <IMAGE>
-<QEMU>
+FROM alpine:3.5
 
-ARG BUILD_DATE
-ARG VCS_REF
-ARG VCS_URL
-ARG VERSION
+ARG ARCH=amd64
+ARG VERSION=7-1-02
 
-ENV ARCH=<ARCH> \
-    PICAPPORT_PORT=80
+ENV PICAPPORT_PORT=80
 
 RUN apk add --update --no-cache tini openjdk8 curl && \
     mkdir -p /opt/picapport && \
@@ -22,12 +18,8 @@ EXPOSE ${PICAPPORT_PORT}
 
 ENTRYPOINT ["tini", "--", "java", "-Xms256m", "-Xmx512m", "-Duser.home=/opt/picapport", "-jar", "picapport-headless.jar"]
 
-LABEL org.label-schema.version=$VERSION \
-    org.label-schema.name="Freenom DNS Updater" \
-    org.label-schema.vcs-ref=$VCS_REF \
-    org.label-schema.vcs-url=$VCS_URL \
-    org.label-schema.build-date=$BUILD_DATE \
-    org.label-schema.schema-version="1.0" \
-    org.label-schema.docker.cmd="docker run -d  whatever4711/freenom:amd64-latest" \
-    org.label-schema.vendor="Marcel Grossmann" \
-    org.label-schema.architecture=$ARCH
+LABEL de.whatever4711.picapport.version=$VERSION \
+    de.whatever4711.picapport.name="PicApport" \
+    de.whatever4711.picapport.docker.cmd="docker run -d  whatever4711/picapport:latest" \
+    de.whatever4711.picapport.vendor="Marcel Grossmann" \
+    de.whatever4711.picapport.architecture=$ARCH
