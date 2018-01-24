@@ -2,7 +2,7 @@
 set -e
 
 image="whatever4711/picapport"
-docker tag whoami "$image:linux-$ARCH-$TRAVIS_TAG"
+docker tag picapport "$image:linux-$ARCH-$TRAVIS_TAG"
 docker push "$image:linux-$ARCH-$TRAVIS_TAG"
 
 if [ "$ARCH" == "amd64" ]; then

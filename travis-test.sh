@@ -7,5 +7,5 @@ if [ "$ARCH" == "amd64" ]; then
 
   sleep 5
 
-  docker logs picapport
+  docker logs picapporttest
 fi
