@@ -13,5 +13,4 @@ if [ -d tmp ]; then
   rm -rf tmp
 fi
 
-docker run --rm --privileged multiarch/qemu-user-static:register --reset
-docker build -t picapport --build-arg "ARCH=$ARCH" --build-arg "VERSION=$(cat VERSION)" .
+make $ARCH

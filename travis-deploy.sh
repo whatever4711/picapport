@@ -14,12 +14,17 @@ docker push "$image:linux-$ARCH-$tag"
 if [ "$ARCH" == "amd64" ]; then
   set +e
   echo "Waiting for other images $image:linux-arm-$tag"
-  until docker run --rm stefanscherer/winspector "$image:linux-arm-$tag"
+  until docker run --rm stefanscherer/winspector "$image:linux-arm32v6-$tag"
   do
     sleep 15
     echo "Try again"
   done
-  until docker run --rm stefanscherer/winspector "$image:linux-arm64-$tag"
+  until docker run --rm stefanscherer/winspector "$image:linux-arm32v7-$tag"
+  do
+    sleep 15
+    echo "Try again"
+  done
+  until docker run --rm stefanscherer/winspector "$image:linux-arm64v8-$tag"
   do
     sleep 15
     echo "Try again"
@@ -37,9 +42,11 @@ if [ "$ARCH" == "amd64" ]; then
   echo "Pushing manifest $image:$tag"
   ./docker -D manifest create "$image:$tag" \
     "$image:linux-amd64-$tag" \
-    "$image:linux-arm-$tag" \
-    "$image:linux-arm64-$tag"
-  ./docker manifest annotate "$image:$tag" "$image:linux-arm-$tag" --os linux --arch arm --variant v6
-  ./docker manifest annotate "$image:$tag" "$image:linux-arm64-$tag" --os linux --arch arm64 --variant v8
+    "$image:linux-arm32v6-$tag" \
+    "$image:linux-arm32v7-$tag" \
+    "$image:linux-arm64v8-$tag"
+  ./docker manifest annotate "$image:$tag" "$image:linux-arm32v6-$tag" --os linux --arch arm --variant v6
+  ./docker manifest annotate "$image:$tag" "$image:linux-arm32v7-$tag" --os linux --arch arm --variant v7
+  ./docker manifest annotate "$image:$tag" "$image:linux-arm64v8-$tag" --os linux --arch arm64 --variant v8
   ./docker manifest push "$image:$tag"
 fi

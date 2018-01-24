@@ -1,9 +1,10 @@
-ARCHITECTURES = amd64 armhf aarch64
+ARCHITECTURES = amd64 arm32v6 arm32v7 arm64v8
 QEMU_STATIC = https://github.com/multiarch/qemu-user-static/releases/download/v2.8.0
 IMAGE = alpine:3.5
 MULTIARCH = multiarch/qemu-user-static:register
 TMP_DIR = tmp
 TMP_DOCKERFILE = Dockerfile.generated
+VERSION = $(shell cat VERSION)
 ifeq ($(REPO),)
   REPO = picapport
 endif
@@ -32,7 +33,7 @@ $(ARCHITECTURES):
 	@docker build --build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
 			--build-arg VCS_REF=$(shell git rev-parse --short HEAD) \
 			--build-arg VCS_URL=$(shell git config --get remote.origin.url) \
-			--build-arg VERSION="6-3-05" \
+			--build-arg VERSION=$(VERSION) \
 			-f $(TMP_DOCKERFILE) -t $(REPO):$@-$(TAG) .
 	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
 
