@@ -9,10 +9,12 @@ env:
 script:
   - ./travis-build.sh
   - ./travis-test.sh
-  - > # push image
-    travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-    ./travis-deploy.sh
-
+  - >
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      # push image
+      travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
+      ./travis-deploy.sh
+    fi
 # after_success:
 # - docker images
 # - make push
