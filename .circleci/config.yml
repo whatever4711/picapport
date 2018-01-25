@@ -12,25 +12,29 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: make amd64
+      - run: export ARCHITECTURES=amd64
+      - run: make
+      - run: make push
   build_arm32v6:
     working_directory: ~/picapport
     machine: true
     steps:
       - checkout
-      - run: make arm32v6
+      - run: export ARCHITECTURES=arm32v6
+      - run: make
+      - run: make push
   build_arm64v8:
     working_directory: ~/picapport
     machine: true
     steps:
       - checkout
-      - run: make arm64v8
-  deploy:
-    working_directory: ~/picapport
+      - run: export ARCHITECTURES=arm64v8
+      - run: make
+      - run: make push
+  manifest:
     machine: true
     steps:
       - checkout
-      - run: make push
 
 
 workflows:
@@ -47,7 +51,7 @@ workflows:
       - build_arm64v8:
           requires:
             - update
-      - deploy:
+      - manifest:
           requires:
             - build_amd64
             - build_arm32v6
