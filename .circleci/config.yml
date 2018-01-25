@@ -1,18 +1,21 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/picapport
+  update:
     machine: true
     steps:
-      - checkout
-      # get latest CE version
       - run: echo "Updating Docker engine to have multi-stage builds"
       - run: sudo service docker stop
       - run: curl -fsSL https://get.docker.com/ | sudo sh
       - run: docker version
-      # - run: docker image build -f Dockerfile.server -t whatever4711/dynoff-glassfish .
-      # - run: docker image build -f Dockerfile.client -t whatever4711/dynoff-glassfish:latest-client .
-      # - run: docker images
-      # - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      # - run: docker push whatever4711/dynoff-glassfish:latest
-      # - run: docker push whatever4711/dynoff-glassfish:latest-client
+  checkout:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+
+workflows:
+  version: 2
+  update:
+    - update
+  checkout:
+    - checkout
