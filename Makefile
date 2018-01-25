@@ -8,15 +8,7 @@ VERSION = $(shell cat VERSION)
 ifeq ($(REPO),)
   REPO = picapport
 endif
-ifeq ($(TRAVIS_BRANCH),)
-	TAG = latest
-else
-  ifeq ($(TRAVIS_BRANCH), master)
-    TAG = latest
-  else
-    TAG = $(TRAVIS_BRANCH)
-	endif
-endif
+TAG = latest
 
 all: $(ARCHITECTURES)
 
