@@ -7,7 +7,7 @@ jobs:
       - run: sudo service docker stop
       - run: curl -fsSL https://get.docker.com/ | sudo sh
       - run: docker version
-  checkout:
+  build:
     working_directory: ~/picapport
     machine: true
     steps:
@@ -18,6 +18,6 @@ workflows:
   update:
     jobs:
       - update
-  checkout:
+  build:
     jobs:
-      - checkout
+      - build
