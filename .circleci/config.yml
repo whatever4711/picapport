@@ -15,11 +15,9 @@ jobs:
 
 workflows:
   version: 2
-  update:
+  build-and-deploy:
     jobs:
       - update
-  build:
-    jobs:
       - build
-        requires:
-          - update
+        requries:
+          -update
