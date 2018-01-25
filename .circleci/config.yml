@@ -25,6 +25,13 @@ jobs:
     steps:
       - checkout
       - run: make arm64v8
+  deploy:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      - run: make push
+
 
 workflows:
   version: 2
@@ -40,3 +47,8 @@ workflows:
       - build_arm64v8:
           requires:
             - update
+      - deploy:
+          requires:
+            - build_amd64
+            - build_arm32v6
+            - build_arm64v8
