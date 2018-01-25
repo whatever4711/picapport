@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      # get latest CE version
+      - run: curl -fsSL https://raw.githubusercontent.com/StefanScherer/docker-init/master/ubuntu/install-docker-ce.sh | sh
+      - run: docker version
+      # - run: docker image build -f Dockerfile.server -t whatever4711/dynoff-glassfish .
+      # - run: docker image build -f Dockerfile.client -t whatever4711/dynoff-glassfish:latest-client .
+      # - run: docker images
+      # - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      # - run: docker push whatever4711/dynoff-glassfish:latest
+      # - run: docker push whatever4711/dynoff-glassfish:latest-client
