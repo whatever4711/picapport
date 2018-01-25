@@ -7,11 +7,24 @@ jobs:
       - run: sudo service docker stop
       - run: curl -fsSL https://get.docker.com/ | sudo sh
       - run: docker version
-  build:
+  build_amd64:
     working_directory: ~/picapport
     machine: true
     steps:
       - checkout
+      - run: make amd64
+  build_arm32v6:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      - run: make arm32v6
+  build_arm64v8:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      - run: make arm64v8
 
 workflows:
   version: 2
