@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/whatever4711/picapport.svg?branch=master)](https://travis-ci.org/whatever4711/picapport)
+[![CircleCI](https://circleci.com/gh/whatever4711/picapport.svg?style=svg)](https://circleci.com/gh/whatever4711/picapport)
 
 [![](https://images.microbadger.com/badges/version/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own image badge on microbadger.com")
