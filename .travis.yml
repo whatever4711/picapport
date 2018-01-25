@@ -4,24 +4,46 @@ services:
 env:
   global:
     - REPO=whatever4711/picapport
-  matrix:
-    - ARCH=arm32v6
-    - ARCH=arm64v8
-    - ARCH=amd64
+before_script:
+  - docker version
+  - uname -a
+  - echo "Updating Docker engine to have multi-stage builds"
+  - sudo service docker stop
+  - curl -fsSL https://get.docker.com/ | sudo sh
+  - docker version
+  - >
+    if [ -d tmp ]; then
+      docker rm build
+      rm -rf tmp
+    fi
 script:
-  - ./travis-build.sh
-  - ./travis-test.sh
+  - make all
+after_script:
+  - docker run -d -p 8080:8080 --name=picapporttest "$REPO:linux-amd64-latest"
+  - sleep 5
+  - docker logs picapporttest
+
+
   - >
     if [ "$TRAVIS_BRANCH" == "master" ]; then
       # push image
       travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS";
       ./travis-deploy.sh
     fi
-# after_success:
+after_success:
+  - docker images
+  - >
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      # push image
+      make push;
+      # Generate the manifest
+      ./travis-deploy.sh;
+    fi
+  - curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
 # - docker images
 # - make push
 # - make clean
-# - curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
+
 # notifications:
 #   email: false
 #   slack:

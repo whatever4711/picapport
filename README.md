@@ -1,17 +1,19 @@
 [![Build Status](https://travis-ci.org/whatever4711/picapport.svg?branch=master)](https://travis-ci.org/whatever4711/picapport)
 
-[![](https://images.microbadger.com/badges/version/whatever4711/picapport:amd64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:amd64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/picapport:amd64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:amd64-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/picapport:amd64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:amd64-latest "Get your own commit badge on microbadger.com")
-
-[![](https://images.microbadger.com/badges/version/whatever4711/picapport:armhf-latest.svg)](https://microbadger.com/images/whatever4711/picapport:armhf-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/picapport:armhf-latest.svg)](https://microbadger.com/images/whatever4711/picapport:armhf-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/picapport:armhf-latest.svg)](https://microbadger.com/images/whatever4711/picapport:armhf-latest "Get your own commit badge on microbadger.com")
-
-[![](https://images.microbadger.com/badges/version/whatever4711/picapport:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:aarch64-latest "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/whatever4711/picapport:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:aarch64-latest "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/whatever4711/picapport:aarch64-latest.svg)](https://microbadger.com/images/whatever4711/picapport:aarch64-latest "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own commit badge on microbadger.com")
 
 # Picapport in a Container
 
-Currently, this is a docker image based on the rpi-java image (whatever4711/rpi-java) and has [Picapport](http://www.picapport.de/) installed.
+Currently, this is a docker image based on Alpine and has [Picapport](http://www.picapport.de/) installed.
+
+## Supported Architectures
+
+This multiarch image supports amd64, arm32v6 and arm64v8 on Linux
 
 ## Starting the container
-`docker run -d --name picapport -p 8080:80 whatever4711/picapport:amd64-latest`
+`docker run -d --name picapport -p 8080:80 whatever4711/picapport`
 Thereafter you can access picapport on http://localhost:8080
 
 ## Specifying Custom Configurations
@@ -31,7 +33,7 @@ In this file we specified, e.g., the path for picapport to search for the pictur
 - Mount your photos with: `-v /path/to/your/fotos:/srv/photos`
 - Eventually mount the cache with `-v /path/to/cache:/srv/cache`
 
-`docker run -d --name picapport -p 8080:80 -v $PWD/config:/opt/picapport/.picapport -v /path/to/fotos:/srv/photos -v /path/to/cache:/srv/cache whatever4711/rpi-picapport`
+`docker run -d --name picapport -p 8080:80 -v $PWD/config:/opt/picapport/.picapport -v /path/to/fotos:/srv/photos -v /path/to/cache:/srv/cache whatever4711/picapport`
 
 ## Easier setup with docker-compose
 ```YAML
@@ -39,7 +41,7 @@ version: '3'
 
 services:
   picapport:
-    image: whatever4711/picapport:amd64-latest
+    image: whatever4711/picapport
     restart: always
     expose:
       - 80
