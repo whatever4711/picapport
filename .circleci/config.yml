@@ -18,6 +18,6 @@ workflows:
   build-and-deploy:
     jobs:
       - update
-      - build
+      - build:
           requries:
             - update
