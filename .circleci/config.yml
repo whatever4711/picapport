@@ -16,6 +16,8 @@ jobs:
 workflows:
   version: 2
   update:
-    - update
+    jobs:
+      - update
   checkout:
-    - checkout
+    jobs:
+      - checkout
