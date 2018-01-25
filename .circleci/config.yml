@@ -32,18 +32,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: echo "Downloading docker client with manifest command"
-      - run: wget https://6582-88013053-gh.circle-artifacts.com/1/work/build/docker-linux-amd64
-      - run: mv docker-linux-amd64 docker
-      - run: chmod +x docker
-      - run: ./docker version
-      - run: ./docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} 
-      - run: echo "Pushing manifest $REPO:latest"
-      - run: ./docker -D manifest create "$REPO:latest" "$REPO:linux-amd64-latest" "$REPO:linux-arm32v6-latest" "$REPO:linux-arm64v8-latest"
-      - run: ./docker manifest annotate "$REPO:latest" "$REPO:linux-arm32v6-latest" --os linux --arch arm --variant v6
-      - run: ./docker manifest annotate "$REPO:latest" "$REPO:linux-arm64v8-latest" --os linux --arch arm64 --variant v8
-      - run: ./docker manifest push "$REPO:latest"
-
+      - run: make manifest
 
 workflows:
   version: 2

@@ -33,17 +33,16 @@ $(ARCHITECTURES):
 
 push:
 	@docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
-	$(foreach arch,$(ARCHITECTURES), docker push $(REPO):linux-$(arch)-$(TAG);)
+	@$(foreach arch,$(ARCHITECTURES), docker push $(REPO):linux-$(arch)-$(TAG);)
 	@docker logout
 
 manifest:
 	@wget -O docker https://6582-88013053-gh.circle-artifacts.com/1/work/build/docker-linux-amd64
 	@chmod +x docker
 	@./docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
-	@./docker -D manifest create $(REPO):$(TAG) $(foreach arch,$(ARCHITECTURES), $(REPO):linux-$(arch)-$(TAG))
-  $(foreach arch,$(ARCHITECTURES), ./docker -D manifest annotate $(REPO):$(TAG) $(REPO):linux-$(arch)-$(TAG) $(strip $(call convert_variants,$@))
-#	- run: ./docker manifest annotate "$REPO:latest" "$REPO:linux-arm64v8-latest" --os linux --arch arm64 --variant v8
-#	- run: ./docker manifest push "$REPO:latest"
+	@./docker manifest create $(REPO):$(TAG) $(foreach arch,$(ARCHITECTURES), $(REPO):linux-$(arch)-$(TAG))
+	@$(foreach arch,$(ARCHITECTURES), ./docker manifest annotate $(REPO):$(TAG) $(REPO):linux-$(arch)-$(TAG) --os linux $(strip $(call convert_variants,$(arch)));)
+  @./docker manifest push $(REPO):$(TAG)
 
 clean:
 	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
@@ -53,5 +52,5 @@ define convert_archs
 endef
 
 define convert_variants
-	$(shell echo $(1) | sed -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm64v8|--arch arm64 --variant v8|g")
+	$(shell echo $(1) | sed -e "s|amd64|--arch amd64|g" -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm64v8|--arch arm64 --variant v8|g")
 endef
