@@ -19,5 +19,5 @@ workflows:
     jobs:
       - update
       - build:
-          requries:
+          requires:
             - update
