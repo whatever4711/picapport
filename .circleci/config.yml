@@ -12,25 +12,22 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: export ARCHITECTURES=amd64
-      - run: make
-      - run: make push
+      - run: ARCHITECTURES=amd64 make
+      - run: ARCHITECTURES=amd64 make push
   build_arm32v6:
     working_directory: ~/picapport
     machine: true
     steps:
       - checkout
-      - run: export ARCHITECTURES=arm32v6
-      - run: make
-      - run: make push
+      - run: ARCHITECTURES=arm32v6 make
+      - run: ARCHITECTURES=arm32v6 make push
   build_arm64v8:
     working_directory: ~/picapport
     machine: true
     steps:
       - checkout
-      - run: export ARCHITECTURES=arm64v8
-      - run: make
-      - run: make push
+      - run: ARCHITECTURES=arm64v8 make
+      - run: ARCHITECTURES=arm64v8 make push
   manifest:
     machine: true
     steps:
