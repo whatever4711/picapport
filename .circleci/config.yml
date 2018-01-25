@@ -31,6 +31,12 @@ workflows:
   build-and-deploy:
     jobs:
       - update
-      - build:
+      - build_amd64:
+          requires:
+            - update
+      - build_arm32v6:
+          requires:
+            - update
+      - build_arm64v8:
           requires:
             - update
