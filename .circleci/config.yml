@@ -6,7 +6,9 @@ jobs:
     steps:
       - checkout
       # get latest CE version
-      - run: curl -fsSL https://raw.githubusercontent.com/StefanScherer/docker-init/master/ubuntu/install-docker-ce.sh | sh
+      - run: echo "Updating Docker engine to have multi-stage builds"
+      - run: sudo service docker stop
+      - run: curl -fsSL https://get.docker.com/ | sudo sh
       - run: docker version
       # - run: docker image build -f Dockerfile.server -t whatever4711/dynoff-glassfish .
       # - run: docker image build -f Dockerfile.client -t whatever4711/dynoff-glassfish:latest-client .
