@@ -5,6 +5,8 @@ MULTIARCH = multiarch/qemu-user-static:register
 TMP_DIR = tmp
 TMP_DOCKERFILE = Dockerfile.generated
 VERSION = $(shell cat VERSION)
+#DOCKER_USER = test
+#DOCKER_PASS = test
 ifeq ($(REPO),)
   REPO = picapport
 endif
@@ -34,9 +36,22 @@ push:
 	$(foreach arch,$(ARCHITECTURES), docker push $(REPO):linux-$(arch)-$(TAG);)
 	@docker logout
 
+manifest:
+	@wget -O docker https://6582-88013053-gh.circle-artifacts.com/1/work/build/docker-linux-amd64
+	@chmod +x docker
+	@./docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
+	@./docker -D manifest create $(REPO):$(TAG) $(foreach arch,$(ARCHITECTURES), $(REPO):linux-$(arch)-$(TAG))
+  $(foreach arch,$(ARCHITECTURES), ./docker -D manifest annotate $(REPO):$(TAG) $(REPO):linux-$(arch)-$(TAG) $(strip $(call convert_variants,$@))
+#	- run: ./docker manifest annotate "$REPO:latest" "$REPO:linux-arm64v8-latest" --os linux --arch arm64 --variant v8
+#	- run: ./docker manifest push "$REPO:latest"
+
 clean:
 	@rm -rf $(TMP_DIR) $(TMP_DOCKERFILE)
 
 define convert_archs
 	$(shell echo $(1) | sed -e "s|arm32.*|arm|g" -e "s|arm64.*|aarch64|g" -e "s|amd64|x86_64|g")
+endef
+
+define convert_variants
+	$(shell echo $(1) | sed -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm64v8|--arch arm64 --variant v8|g")
 endef
