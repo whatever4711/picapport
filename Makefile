@@ -10,7 +10,12 @@ VERSION = $(shell cat VERSION)
 ifeq ($(REPO),)
   REPO = picapport
 endif
-TAG = latest
+ifeq ($(CIRCLE_TAG),)
+	TAG = latest
+else
+	TAG = $CIRCLE_TAG
+endif
+
 
 all: $(ARCHITECTURES)
 
