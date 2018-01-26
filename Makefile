@@ -1,6 +1,6 @@
 ARCHITECTURES = amd64 arm32v6 arm64v8
 QEMU_STATIC = https://github.com/multiarch/qemu-user-static/releases/download/v2.8.0
-IMAGE = alpine:3.5
+IMAGE = alpine:latest
 MULTIARCH = multiarch/qemu-user-static:register
 TMP_DIR = tmp
 TMP_DOCKERFILE = Dockerfile.generated
