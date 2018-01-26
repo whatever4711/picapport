@@ -42,21 +42,39 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - update
+      - update:
+          filters:
+            tags:
+              only: /.*/
       - build_amd64:
           requires:
             - update
+          filters:
+            tags:
+              only: /.*/
       - build_arm32v6:
           requires:
             - update
+          filters:
+            tags:
+              only: /.*/
       - build_arm64v8:
           requires:
             - update
+          filters:
+            tags:
+              only: /.*/
       - manifest:
           requires:
             - build_amd64
             - build_arm32v6
             - build_arm64v8
+          filters:
+            tags:
+              only: /.*/
       - badge:
           requires:
             - manifest
+          filters:
+            tags:
+              only: /.*/
