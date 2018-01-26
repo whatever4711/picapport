@@ -13,7 +13,7 @@ endif
 ifeq ($(CIRCLE_TAG),)
 	TAG = latest
 else
-	TAG = $CIRCLE_TAG
+	TAG = $(CIRCLE_TAG)
 endif
 
 
