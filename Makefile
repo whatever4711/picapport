@@ -58,5 +58,5 @@ define convert_archs
 endef
 
 define convert_variants
-	$(shell echo $(1) | sed -e "s|amd64|--arch amd64|g" -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm64v8|--arch arm64 --variant v8|g")
+	$(shell echo $(1) | sed -e "s|amd64|--arch amd64|g" -e "s|arm32v5|--arch arm --variant v5|g" -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm32v7|--arch arm --variant v7|g" -e "s|arm64v8|--arch arm64 --variant v8|g")
 endef
