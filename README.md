@@ -10,7 +10,7 @@ Currently, this is a docker image based on Alpine and has [Picapport](http://www
 
 ## Supported Architectures
 
-This multiarch image supports amd64, arm32v6 and arm64v8 on Linux
+This multiarch image supports `amd64`, `i386`, `arm32v6`, and `arm64v8` on Linux
 
 ## Starting the container
 `docker run -d --name picapport -p 8080:80 whatever4711/picapport`

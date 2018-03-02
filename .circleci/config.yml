@@ -14,6 +14,13 @@ jobs:
       - checkout
       - run: make ARCHITECTURES=amd64
       - run: make ARCHITECTURES=amd64 push
+  build_i386:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      - run: make ARCHITECTURES=i386
+      - run: make ARCHITECTURES=i386 push
   build_arm32v6:
     working_directory: ~/picapport
     machine: true
@@ -52,6 +59,12 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - build_i386:
+          requires:
+            - update
+          filters:
+            tags:
+              only: /.*/
       - build_arm32v6:
           requires:
             - update
@@ -67,6 +80,7 @@ workflows:
       - manifest:
           requires:
             - build_amd64
+            - build_i386
             - build_arm32v6
             - build_arm64v8
           filters:
