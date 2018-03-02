@@ -1,1 +1,1 @@
-docker build -t picapport .
+docker build -t picapport -f Dockerfile.windows .
