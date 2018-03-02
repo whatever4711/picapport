@@ -35,6 +35,20 @@ jobs:
       - checkout
       - run: make ARCHITECTURES=arm64v8
       - run: make ARCHITECTURES=arm64v8 push
+  build_ppc64le:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      - run: make ARCHITECTURES=ppc64le
+      - run: make ARCHITECTURES=ppc64le push
+  build_arm64v8:
+    working_directory: ~/picapport
+    machine: true
+    steps:
+      - checkout
+      - run: make ARCHITECTURES=s390x
+      - run: make ARCHITECTURES=s390x push
   manifest:
     machine: true
     steps:
@@ -77,12 +91,26 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - build_ppc64le:
+          requires:
+            - update
+          filters:
+            tags:
+              only: /.*/
+      - build_s390x:
+          requires:
+            - update
+          filters:
+            tags:
+              only: /.*/
       - manifest:
           requires:
             - build_amd64
             - build_i386
             - build_arm32v6
             - build_arm64v8
+            - build_ppc64le
+            - build_s390x
           filters:
             tags:
               only: /.*/
