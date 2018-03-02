@@ -1,3 +1,6 @@
-echo %REPO%
+echo $REPO
 
-docker build -t picapport -f Dockerfile.windows .
+([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")
+
+
+docker build -t $REPO --build-arg --build-arg BUILD_DATE=([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")  -f Dockerfile.windows .
