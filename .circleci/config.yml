@@ -42,7 +42,7 @@ jobs:
       - checkout
       - run: make ARCHITECTURES=ppc64le
       - run: make ARCHITECTURES=ppc64le push
-  build_arm64v8:
+  build_s390x:
     working_directory: ~/picapport
     machine: true
     steps:
