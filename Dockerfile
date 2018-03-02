@@ -1,11 +1,14 @@
-FROM <IMAGE>
-<QEMU>
+ARG IMAGE=alpine:latest
+
+FROM ${IMAGE}
+ARG QEMU=x86_64
+ADD https://github.com/multiarch/qemu-user-static/releases/download/v2.11.0/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
+ARG ARCH=amd64
 
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
-ARG ARCH=<ARCH>
 
 ENV PICAPPORT_PORT=80
 
@@ -17,8 +20,6 @@ RUN apk add --update --no-cache tini openjdk8 curl && \
 
 WORKDIR /opt/picapport
 EXPOSE ${PICAPPORT_PORT}
-
-#ENTRYPOINT ["java", "-DTRACE=INFO", "-Duser.home=/opt/picapport", "-cp", "picapport.jar", "de.contecon.picapport.PicApport", "-configfile=/opt/picapport/.picapport/picapport.properties", "-pgui.enabled=false"]
 
 ENTRYPOINT ["tini", "--", "java", "-Xms256m", "-Xmx512m", "-Duser.home=/opt/picapport", "-jar", "picapport-headless.jar"]
 
