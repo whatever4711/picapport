@@ -1,10 +1,12 @@
 ARG IMAGE=alpine:latest
 
+# first image to download qemu and make it executable
 FROM alpine AS qemu
 ARG QEMU=x86_64
 ADD https://github.com/multiarch/qemu-user-static/releases/download/v2.11.0/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
 RUN chmod +x /usr/bin/qemu-${QEMU}-static
 
+# second image to deliver the picapport container
 FROM ${IMAGE}
 ARG QEMU=x86_64
 COPY --from=qemu /usr/bin/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
