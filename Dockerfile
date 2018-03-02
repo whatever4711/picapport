@@ -1,8 +1,13 @@
 ARG IMAGE=alpine:latest
 
-FROM ${IMAGE}
+FROM alpine AS qemu
 ARG QEMU=x86_64
 ADD https://github.com/multiarch/qemu-user-static/releases/download/v2.11.0/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
+RUN chmod +x /usr/bin/qemu-${QEMU}-static
+
+FROM ${IMAGE}
+ARG QEMU=x86_64
+COPY --from=qemu /usr/bin/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
 ARG ARCH=amd64
 
 ARG BUILD_DATE
@@ -11,7 +16,6 @@ ARG VCS_URL
 ARG VERSION
 
 ENV PICAPPORT_PORT=80
-
 RUN apk add --update --no-cache tini openjdk8 curl && \
     mkdir -p /opt/picapport && \
     curl -SsL -o /opt/picapport/picapport-headless.jar http://www.picapport.de/download/${VERSION}/picapport-headless.jar && \
