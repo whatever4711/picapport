@@ -1,108 +1,105 @@
 version: 2
+
+defaults: &defaults
+  working_directory: ~/picapport
+  machine: true
+
 jobs:
-  update:
-    machine: true
-    steps:
-      - run: echo "Updating Docker engine to have multi-stage builds"
-      - run: sudo service docker stop
-      - run: curl -fsSL https://get.docker.com/ | sudo sh
-      - run: docker version
   build_amd64:
-    working_directory: ~/picapport
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make ARCHITECTURES=amd64
-      - run: make ARCHITECTURES=amd64 push
+      - run:
+          name: Build image for amd64
+          command: make ARCHITECTURES=amd64
+      - deploy:
+          name: Push image for amd64 to dockerhub
+          command: make ARCHITECTURES=amd64 push
   build_i386:
-    working_directory: ~/picapport
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make ARCHITECTURES=i386
-      - run: make ARCHITECTURES=i386 push
+      - run:
+          name: Build image for i386
+          command: make ARCHITECTURES=i386
+      - deploy:
+          name: Push image for i386 to dockerhub
+          command: make ARCHITECTURES=i386 push
   build_arm32v6:
-    working_directory: ~/picapport
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make ARCHITECTURES=arm32v6
-      - run: make ARCHITECTURES=arm32v6 push
+      - run:
+          name: Build image for arm32v6
+          command: make ARCHITECTURES=arm32v6
+      - deploy:
+          name: Push image for arm32v6 to dockerhub
+          command: make ARCHITECTURES=arm32v6 push
   build_arm64v8:
-    working_directory: ~/picapport
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make ARCHITECTURES=arm64v8
-      - run: make ARCHITECTURES=arm64v8 push
+      - run:
+          name: Build image for arm64v8
+          command: make ARCHITECTURES=arm64v8
+      - deploy:
+          name: Push image for arm64v8 to dockerhub
+          command: make ARCHITECTURES=arm64v8 push
   build_ppc64le:
-    working_directory: ~/picapport
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make ARCHITECTURES=ppc64le
-      - run: make ARCHITECTURES=ppc64le push
+      - run:
+          name: Build image for ppc64le
+          command: make ARCHITECTURES=ppc64le
+      - deploy:
+          name: Push image for ppc64le to dockerhub
+          command: make ARCHITECTURES=ppc64le push
   build_s390x:
-    working_directory: ~/picapport
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make ARCHITECTURES=s390x
-      - run: make ARCHITECTURES=s390x push
+      - run:
+          name: Build image for s390x
+          command: make ARCHITECTURES=s390x
+      - deploy:
+          name: Push image for s390x to dockerhub
+          command: make ARCHITECTURES=s390x push
   manifest:
-    machine: true
+    <<: *defaults
     steps:
       - checkout
-      - run: make manifest
+      - deploy:
+          name: Generate multiarch manifest and push to dockerhub
+          command: make manifest
   badge:
-    machine: true
+    <<: *defaults
     steps:
-      - run: curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
+      - run:
+          name: Call microbadger's webhook
+          command: curl -X POST https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=
+
+tag_filter: &tag_filter
+  filters:
+    tags:
+      only: /.*/
 
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - update:
-          filters:
-            tags:
-              only: /.*/
       - build_amd64:
-          requires:
-            - update
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - build_i386:
-          requires:
-            - update
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - build_arm32v6:
-          requires:
-            - update
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - build_arm64v8:
-          requires:
-            - update
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - build_ppc64le:
-          requires:
-            - update
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - build_s390x:
-          requires:
-            - update
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - manifest:
           requires:
             - build_amd64
@@ -111,12 +108,8 @@ workflows:
             - build_arm64v8
             - build_ppc64le
             - build_s390x
-          filters:
-            tags:
-              only: /.*/
+          <<: *tag_filter
       - badge:
-          requires:
-            - manifest
-          filters:
-            tags:
-              only: /.*/
+         requires:
+           - manifest
+         <<: *tag_filter
