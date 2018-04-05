@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop';
 
-echo $env:REPO\:windows-amd64
+echo $env:REPO`:windows-amd64
 
 ([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")
 
