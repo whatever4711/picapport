@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop';
-set VERSION=(type VERSION)
+set /P VERSION=<VERSION
 set DATE=([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")
 
 
