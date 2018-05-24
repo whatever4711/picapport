@@ -11,10 +11,17 @@ Currently, this is a docker image based on Alpine and has [Picapport](http://www
 
 ## Supported Architectures
 
-This multiarch image supports `amd64`, `i386`, `arm32v6`, `arm64v8`, `ppc64le`, and `s390x` on Linux
+This multiarch image supports `amd64`, `i386`, `arm32v6`, `arm64v8`, `ppc64le`, and `s390x` on Linux and `amd64` on Windows
 
 ## Starting the container
+### For Linux
 `docker run -d --name picapport -p 8080:80 whatever4711/picapport`
+
+
+## Starting the container
+### For Windows
+`docker run -d --name picapport -p 8080:80 whatever4711/picapport:windows-amd64`
+
 Thereafter you can access picapport on http://localhost:8080
 
 ## Specifying Custom Configurations
