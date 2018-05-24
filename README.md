@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/whatever4711/picapport.svg?style=svg)](https://circleci.com/gh/whatever4711/picapport)
+[![Build status](https://ci.appveyor.com/api/projects/status/m7ndvfjyf106ivd4?svg=true)](https://ci.appveyor.com/project/whatever4711/picapport)
 
 [![](https://images.microbadger.com/badges/version/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own image badge on microbadger.com")
