@@ -11,6 +11,7 @@ echo "Building Picapport $VER at $DATE"
 if ($isWindows){
   docker build -t $env:REPO --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION -f Dockerfile.windows .
 } else {
+  docker run --rm --privileged "multiarch/qemu-user-static:register" --reset
   docker build -t $env:REPO --build-arg IMAGE="$env:ARCH/$IMAGE" --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION --build-arg "ARCH=$env:ARCH" -f Dockerfile .
 }
 
