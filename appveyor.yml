@@ -28,8 +28,8 @@ matrix:
 build_script:
   - ps: ./build.ps1
 
-#test_script:
-#  - ps: ./test.ps1
-#
+test_script:
+  - ps: ./test.ps1
+
 #deploy_script:
 #  - ps: ./deploy.ps1

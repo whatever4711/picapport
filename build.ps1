@@ -10,10 +10,10 @@ Write-Host Starting build
 echo "Building Picapport $VER at $DATE"
 
 if ($isWindows){
-  docker build -t $env:REPO --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION -f Dockerfile.windows .
+  docker build -t $env:REPO`:windows-amd64 --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION -f Dockerfile.windows .
 } else {
   docker run --rm --privileged "multiarch/qemu-user-static:register" --reset
-  docker build -t $env:REPO --build-arg IMAGE="$env:ARCH/$IMAGE" --build-arg QEMU=$QEMU_ARCH --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION --build-arg "ARCH=$env:ARCH" -f Dockerfile .
+  docker build -t $env:REPO`:linux-$env:ARCH --build-arg IMAGE="$env:ARCH/$IMAGE" --build-arg QEMU=$QEMU_ARCH --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION --build-arg "ARCH=$env:ARCH" -f Dockerfile .
 }
 
 docker images
