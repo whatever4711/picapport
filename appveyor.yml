@@ -31,5 +31,5 @@ build_script:
 test_script:
   - ps: ./test.ps1
 
-#deploy_script:
-#  - ps: ./deploy.ps1
+deploy_script:
+  - ps: ./deploy.ps1
