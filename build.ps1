@@ -3,10 +3,18 @@ $VERSION=(type VERSION)
 $VERSION=$VERSION -replace '\.','-'
 $DATE=([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")
 
+Write-Host Starting build
+
 echo "Building Picapport $VER at $DATE"
 
-docker build -t $env:REPO`:windows-amd64 --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION -f Dockerfile.windows .
+if ($isWindows){
+  docker build -t $env:REPO --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION -f Dockerfile.windows .
+} else {
+  docker build -t $env:REPO --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION --build-arg "ARCH=$env:ARCH" -f Dockerfile .
+}
 
-echo $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
-docker push $env:REPO`:windows-amd64
-docker logout
+docker images
+
+#echo $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
+#docker push $env:REPO`:windows-amd64
+#docker logout

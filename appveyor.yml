@@ -1,8 +1,33 @@
 version: 1.0.{build}
-image: Visual Studio 2017
+image:
+- Visual Studio 2017
+- Ubuntu
 
-install:
-  - docker version
+environment:
+  matrix:
+    - ARCH: arm
+    - ARCH: arm64
+    - ARCH: amd64
+    - ARCH: i386
+    - ARCH: ppc64le
+    - ARCH: s390x
+
+matrix:
+  exclude:
+    - image: Visual Studio 2017
+      ARCH: arm
+    - image: Visual Studio 2017
+      ARCH: arm64
+    - image: Visual Studio 2017
+      ARCH: ppc64le
+    - image: Visual Studio 2017
+      ARCH: s390x
 
 build_script:
-  - ps: .\build.ps1
+  - ps: ./build.ps1
+
+#test_script:
+#  - ps: ./test.ps1
+#
+#deploy_script:
+#  - ps: ./deploy.ps1
