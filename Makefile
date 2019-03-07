@@ -36,7 +36,7 @@ push:
 manifest:
 	@wget -O docker https://6582-88013053-gh.circle-artifacts.com/1/work/build/docker-linux-amd64
 	@chmod +x docker
-	@./docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
+	@echo "$(DOCKER_PASS)" | ./docker login -u $(DOCKER_USER) --password-stdin
 	@./docker manifest create $(REPO):$(TAG) $(foreach arch,$(ARCHITECTURES), $(REPO):linux-$(arch)-$(TAG))
 	@$(foreach arch,$(ARCHITECTURES), ./docker manifest annotate $(REPO):$(TAG) $(REPO):linux-$(arch)-$(TAG) --os linux $(strip $(call convert_variants,$(arch)));)
 	@./docker manifest push $(REPO):$(TAG)
