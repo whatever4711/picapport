@@ -5,9 +5,9 @@ image:
 
 environment:
   matrix:
-    - ARCH: arm
-    - ARCH: arm64
     - ARCH: amd64
+    - ARCH: arm32v6
+    - ARCH: arm64v8
     - ARCH: i386
     - ARCH: ppc64le
     - ARCH: s390x
@@ -17,9 +17,9 @@ matrix:
     - image: Visual Studio 2017
       ARCH: i386
     - image: Visual Studio 2017
-      ARCH: arm
+      ARCH: arm32v6
     - image: Visual Studio 2017
-      ARCH: arm64
+      ARCH: arm64v8
     - image: Visual Studio 2017
       ARCH: ppc64le
     - image: Visual Studio 2017
