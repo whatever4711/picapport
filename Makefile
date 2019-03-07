@@ -25,7 +25,7 @@ $(ARCHITECTURES):
 			--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
 			--build-arg VCS_REF=$(shell git rev-parse --short HEAD) \
 			--build-arg VCS_URL=$(shell git config --get remote.origin.url) \
-			--build-arg VERSION=$(VERSION) \
+			--build-arg VERSION=$(strip $(call replace_dots,$(VERSION))) \
 			-t $(REPO):linux-$@-$(TAG) .
 
 push:
@@ -58,4 +58,7 @@ endef
 # Convert Docker manifest entries according to https://docs.docker.com/registry/spec/manifest-v2-2/#manifest-list-field-descriptions
 define convert_variants
 	$(shell echo $(1) | sed -e "s|amd64|--arch amd64|g" -e "s|i386|--arch 386|g" -e "s|arm32v5|--arch arm --variant v5|g" -e "s|arm32v6|--arch arm --variant v6|g" -e "s|arm32v7|--arch arm --variant v7|g" -e "s|arm64v8|--arch arm64 --variant v8|g" -e "s|ppc64le|--arch ppc64le|g" -e "s|s390x|--arch s390x|g")
+endef
+define replace_dots
+  $(shell echo $(1) | sed -e "s|\.|-|g")
 endef

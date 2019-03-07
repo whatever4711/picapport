@@ -1,5 +1,6 @@
 $ErrorActionPreference = 'Stop';
 $VERSION=(type VERSION)
+$VERSION=$VERSION -replace '\.','-'
 $DATE=([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")
 
 echo "Building Picapport $VER at $DATE"
