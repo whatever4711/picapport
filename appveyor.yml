@@ -1,26 +1,8 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 
-# Uncomment to debug via RDP
-#init:
-#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#
-#on_finish:
-#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-
-#environment:
-#  DOCKER_USER:
-#    secure: LjNiW/ZWrfVIJn3Mc9foeg==
-#  DOCKER_PASS:
-#    secure: 4gsl5WiqIztEWhL5fuhp9X0qT/mKg9fYzKYUUPf5WStIuNddv0fvIKGmvvyuFzzd
 install:
   - docker version
 
 build_script:
   - ps: .\build.ps1
-
-#test_script:
-#  - ps: .\test.ps1
-
-#deploy_script:
-#  - ps: .\deploy.ps1
