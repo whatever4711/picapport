@@ -56,7 +56,7 @@ if ($isWindows) {
 
 } else {
   # Linux
-  if ($env:ARCH -eq "amd64") {
+  if ($env:ARCH -eq "s390x") {
     # The last in the build matrix
     docker -D manifest create "$($image):$TAG" `
       "$($image):linux-amd64-$TAG" `
