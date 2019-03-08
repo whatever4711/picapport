@@ -28,26 +28,8 @@ $auth64 = [Convert]::ToBase64String($auth)
 
 $os = If ($isWindows) {"windows"} Else {"linux"}
 docker tag picapport "$($image):$os-$env:ARCH-$TAG"
+docker push "$($image):$os-$env:ARCH-$TAG"
 
-$retrycount=0
-$completed=$false
-
-while (-not $completed) {
-    try {
-        & docker push "$($image):$os-$env:ARCH-$TAG"
-        Write-Verbose ("Push succeeded.")
-        $completed = $true
-    } catch {
-        if ($retrycount -ge 5) {
-            Write-Verbose ("Command Push failed the maximum number of {0} times." -f $retrycount)
-            throw
-        } else {
-            Write-Verbose ("Command Push failed. Retrying in 2 seconds.")
-            Start-Sleep 2
-            $retrycount++
-        }
-    }
-}
 
 
 
