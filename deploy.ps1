@@ -46,6 +46,7 @@ while (-not $completed) {
             Start-Sleep 2
             $retrycount++
         }
+    }
 }
 
 
