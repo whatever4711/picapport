@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Continue';
+$ErrorActionPreference = 'Stop';
 
 if (! (Test-Path Env:\APPVEYOR_REPO_TAG_NAME)) {
   Write-Host "No version tag detected. Publishing latest."
@@ -34,6 +34,7 @@ $completed=$false
 
 while (-not $completed) {
     try {
+        $ErrorActionPreference = "Continue"
         & docker push "$($image):$os-$env:ARCH-$TAG"
         Write-Verbose ("Push succeeded.")
         $completed = $true
@@ -46,6 +47,8 @@ while (-not $completed) {
             Start-Sleep 2
             $retrycount++
         }
+    } finally {
+      $ErrorActionPreference = "Stop"
     }
 }
 
