@@ -38,7 +38,7 @@ while (-not $completed) {
         docker push "$($image):$os-$env:ARCH-$TAG"
         Write-Host ("Push succeeded.")
         $completed = $true
-    } catch {
+    } catch [System.Exception] {
         if ($retrycount -ge 5) {
             Write-Host ("Command Push failed the maximum number of {0} times." -f $retrycount)
             throw
