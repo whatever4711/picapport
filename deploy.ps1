@@ -34,8 +34,7 @@ $completed=$false
 
 while (-not $completed) {
     try {
-        $ErrorActionPreference = "Continue"
-        docker push "$($image):$os-$env:ARCH-$TAG" 2>&1 | %{ "$_" }
+        docker push "$($image):$os-$env:ARCH-$TAG" 2>&1
         Write-Host ("Push succeeded.")
         $completed = $true
     } catch [System.Exception] {
@@ -47,9 +46,6 @@ while (-not $completed) {
             Start-Sleep 2
             $retrycount++
         }
-    } finally {
-      $ErrorActionPreference = "Stop"
-    }
 }
 
 
