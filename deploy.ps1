@@ -61,8 +61,8 @@ if ($isWindows) {
     docker -D manifest create "$($image):$TAG" `
       "$($image):linux-amd64-$TAG" `
       "$($image):linux-i386-$TAG" `
-      "$($image):linux-arm-$TAG" `
-      "$($image):linux-arm64-$TAG" `
+      "$($image):linux-arm32v6-$TAG" `
+      "$($image):linux-arm64v8-$TAG" `
       "$($image):linux-ppc64le-$TAG" `
       "$($image):linux-s390x-$TAG" `
       "$($image):windows-amd64-$TAG" `
