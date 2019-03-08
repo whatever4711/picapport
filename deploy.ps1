@@ -4,7 +4,7 @@ function Retry-Command
 {
     param (
     [Parameter(Mandatory=$true)][string]$command,
-    [Parameter(Mandatory=$false)][hashtable]$args = {},
+    [Parameter(Mandatory=$true)][hashtable]$args,
     [Parameter(Mandatory=$false)][int]$retries = 5,
     [Parameter(Mandatory=$false)][int]$secondsDelay = 2
     )
@@ -18,7 +18,7 @@ function Retry-Command
 
     while (-not $completed) {
         try {
-            & $command
+            & $command @args
             Write-Verbose ("Command [{0}] succeeded." -f $command)
             $completed = $true
         } catch {
@@ -62,7 +62,7 @@ $auth64 = [Convert]::ToBase64String($auth)
 
 $os = If ($isWindows) {"windows"} Else {"linux"}
 docker tag picapport "$($image):$os-$env:ARCH-$TAG"
-Retry-Command -Command 'docker push "$($image):$os-$env:ARCH-$TAG"' -Args @args{} -Verbose
+Retry-Command -Command 'docker push' -Args @{ Name = "$($image):$os-$env:ARCH-$TAG"} -Verbose
 
 if ($isWindows) {
   # Windows
