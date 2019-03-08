@@ -35,15 +35,15 @@ $completed=$false
 while (-not $completed) {
     try {
         $ErrorActionPreference = "Continue"
-        & docker push "$($image):$os-$env:ARCH-$TAG"
-        Write-Verbose ("Push succeeded.")
+        docker push "$($image):$os-$env:ARCH-$TAG"
+        Write-Host ("Push succeeded.")
         $completed = $true
     } catch {
         if ($retrycount -ge 5) {
-            Write-Verbose ("Command Push failed the maximum number of {0} times." -f $retrycount)
+            Write-Host ("Command Push failed the maximum number of {0} times." -f $retrycount)
             throw
         } else {
-            Write-Verbose ("Command Push failed. Retrying in 2 seconds.")
+            Write-Host ("Command Push failed. Retrying in 2 seconds.")
             Start-Sleep 2
             $retrycount++
         }
