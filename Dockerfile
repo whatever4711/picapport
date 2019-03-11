@@ -24,7 +24,7 @@ RUN apk add --update --no-cache tini openjdk8 && \
     mkdir -p /opt/picapport/.picapport && \
     printf "%s\n%s\n%s\n" "server.port=$PICAPPORT_PORT" "robot.root.0.path=/srv/photos" "foto.jpg.usecache=2" > /opt/picapport/.picapport/picapport.properties
 
-COPY --from=qemu /picapport-headless.jar /opt/picapport-headless.jar
+COPY --from=qemu /picapport-headless.jar /opt/picapport/picapport-headless.jar
 WORKDIR /opt/picapport
 EXPOSE ${PICAPPORT_PORT}
 
