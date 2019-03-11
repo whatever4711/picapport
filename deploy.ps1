@@ -4,6 +4,7 @@ function Retry-Command
 {
     param (
     [Parameter(Mandatory=$true)][string]$command,
+    [Parameter(Mandatroy=$true)][string[]]$args,
     [Parameter(Mandatory=$false)][int]$retries = 5,
     [Parameter(Mandatory=$false)][int]$secondsDelay = 2
     )
@@ -13,7 +14,7 @@ function Retry-Command
 
     while (-not $completed) {
         try {
-            & $command 2>&1
+            & $command @args 2>&1
             Write-Verbose ("Command [{0}] succeeded." -f $command)
             $completed = $true
         } catch {
@@ -55,32 +56,22 @@ $auth64 = [Convert]::ToBase64String($auth)
 
 $os = If ($isWindows) {"windows"} Else {"linux"}
 docker tag picapport "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
-Retry-Command -Command "docker push $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" -Verbose
+Retry-Command -Command "docker" -args "push","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" -Verbose
 #docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
 
 if ($isWindows) {
   # Windows
   Write-Host "Rebasing image to produce 1709 variant"
   npm install -g rebase-docker-image
-  Retry-Command -Command "rebase-docker-image `
-    $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME `
-    -t $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1709 `
-    -b microsoft/nanoserver:1709" -Verbose
+  Retry-Command -Command "rebase-docker-image" -args "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME","-t","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1709","-b","microsoft/nanoserver:1709" -Verbose
 
   Write-Host "Rebasing image to produce 1803 variant"
   npm install -g rebase-docker-image
-  Retry-Command -Command "rebase-docker-image `
-    $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME `
-    -t $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1803 `
-    -b microsoft/nanoserver:1803" -Verbose
+  Retry-Command -Command "rebase-docker-image" -args "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME","-t","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1803","-b","microsoft/nanoserver:1803" -Verbose
 
   Write-Host "Rebasing image to produce 1809 variant"
   npm install -g rebase-docker-image
-  Retry-Command -Command "rebase-docker-image `
-    $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME `
-    -s microsoft/nanoserver:sac2016 `
-    -t $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1809 `
-    -b stefanscherer/nanoserver:10.0.17763.253" -Verbose
+  Retry-Command -Command "rebase-docker-image" -args "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME","-s","microsoft/nanoserver:sac2016","-t","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1809","-b","stefanscherer/nanoserver:10.0.17763.253" -Verbose
 
 } else {
   # Linux
@@ -99,7 +90,7 @@ if ($isWindows) {
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1809"
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
-    Retry-Command -Command "docker manifest push $($image):$env:APPVEYOR_REPO_TAG_NAME" -Verbose
+    Retry-Command -Command "docker" -args "manifest","push","$($image):$env:APPVEYOR_REPO_TAG_NAME" -Verbose
 
     Write-Host "Pushing manifest $($image):latest"
     docker -D manifest create "$($image):latest" `
@@ -115,7 +106,7 @@ if ($isWindows) {
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1809"
     docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
-    Retry-Command -Command "docker manifest push $($image):latest" -Verbose
+    Retry-Command -Command "docker" -args "manifest","push","$($image):latest" -Verbose
 
     $result = Invoke-WebRequest -Uri "https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=" -Method POST
   }
