@@ -1,15 +1,15 @@
-$ErrorActionPreference = 'Stop';
-$VERSION=(type VERSION)
+$ErrorActionPreference = 'Stop'
+$VERSION=type VERSION
+$VERSION=$VERSION -replace '\.','-'
 $IMAGE = "alpine:latest"
 $QEMU_ARCH = $env:ARCH -replace 'arm32.*','arm' -replace 'arm64.*','aarch64' -replace 'amd64','x86_64'
-$VERSION=$VERSION -replace '\.','-'
 $DATE=([datetime]::now).toString("yyyy-MM-ddTHH:mm:ssZ")
-$VCS_REF=(git rev-parse --short HEAD)
-$VCS_URL=(git config --get remote.origin.url)
+$VCS_REF=git rev-parse --short HEAD
+$VCS_URL=git config --get remote.origin.url
 
 Write-Host Starting build
 
-echo "Building Picapport $VER at $DATE"
+echo "Building Picapport v$VERSION at $DATE"
 
 if ($isWindows){
   docker build -t picapport --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION --build-arg VCS_REF=$VCS_REF --build-arg VCS_URL=$VCS_URL Dockerfile.windows .
