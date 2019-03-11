@@ -90,8 +90,8 @@ if ($isWindows) {
       "$($image):windows-amd64-$TAG-1709" `
       "$($image):windows-amd64-$TAG-1803" `
       "$($image):windows-amd64-$TAG-1809"
-    docker manifest annotate "$($image):$TAG" "$($image):linux-arm-$TAG" --os linux --arch arm --variant v6
-    docker manifest annotate "$($image):$TAG" "$($image):linux-arm64-$TAG" --os linux --arch arm64 --variant v8
+    docker manifest annotate "$($image):$TAG" "$($image):linux-arm32v6-$TAG" --os linux --arch arm --variant v6
+    docker manifest annotate "$($image):$TAG" "$($image):linux-arm64v8-$TAG" --os linux --arch arm64 --variant v8
     docker manifest push "$($image):$TAG"
 
 #    Write-Host "Pushing manifest $($image):latest"
@@ -106,8 +106,8 @@ if ($isWindows) {
 #      "$($image):windows-amd64-$TAG-1709" `
 #      "$($image):windows-amd64-$TAG-1803" `
 #      "$($image):windows-amd64-$TAG-1809"
-#    docker manifest annotate "$($image):latest" "$($image):linux-arm-$TAG" --os linux --arch arm --variant v6
-#    docker manifest annotate "$($image):latest" "$($image):linux-arm64-$TAG" --os linux --arch arm64 --variant v8
+#    docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$TAG" --os linux --arch arm --variant v6
+#    docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$TAG" --os linux --arch arm64 --variant v8
 #    docker manifest push "$($image):latest"
   }
 }
