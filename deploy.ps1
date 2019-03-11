@@ -13,7 +13,7 @@ function Retry-Command
 
     while (-not $completed) {
         try {
-            & $command 2>&1
+            $command 2>&1
             Write-Verbose ("Command [{0}] succeeded." -f $command)
             $completed = $true
         } catch {
@@ -57,31 +57,31 @@ $auth64 = [Convert]::ToBase64String($auth)
 
 $os = If ($isWindows) {"windows"} Else {"linux"}
 docker tag picapport "$($image):$os-$env:ARCH-$TAG"
-Retry-Command -Command 'docker push "$($image):$os-$env:ARCH-$TAG"' -Verbose
+Retry-Command -Command "docker push $($image):$os-$env:ARCH-$TAG" -Verbose
 
 if ($isWindows) {
   # Windows
   Write-Host "Rebasing image to produce 1709 variant"
   npm install -g rebase-docker-image
-  Retry-Command -Command 'rebase-docker-image `
-    "$($image):$os-$env:ARCH-$TAG" `
-    -t "$($image):$os-$env:ARCH-$TAG-1709" `
-    -b microsoft/nanoserver:1709' -Verbose
+  Retry-Command -Command "rebase-docker-image `
+    $($image):$os-$env:ARCH-$TAG `
+    -t $($image):$os-$env:ARCH-$TAG-1709 `
+    -b microsoft/nanoserver:1709" -Verbose
 
   Write-Host "Rebasing image to produce 1803 variant"
   npm install -g rebase-docker-image
-  Retry-Command -Command 'rebase-docker-image `
-    "$($image):$os-$env:ARCH-$TAG" `
-    -t "$($image):$os-$env:ARCH-$TAG-1803" `
-    -b microsoft/nanoserver:1803' -Verbose
+  Retry-Command -Command "rebase-docker-image `
+    $($image):$os-$env:ARCH-$TAG `
+    -t $($image):$os-$env:ARCH-$TAG-1803 `
+    -b microsoft/nanoserver:1803" -Verbose
 
   Write-Host "Rebasing image to produce 1809 variant"
   npm install -g rebase-docker-image
-  Retry-Command -Command 'rebase-docker-image `
-    "$($image):$os-$env:ARCH-$TAG" `
+  Retry-Command -Command "rebase-docker-image `
+    $($image):$os-$env:ARCH-$TAG `
     -s microsoft/nanoserver:sac2016 `
-    -t "$($image):$os-$env:ARCH-$TAG-1809" `
-    -b stefanscherer/nanoserver:10.0.17763.253' -Verbose
+    -t $($image):$os-$env:ARCH-$TAG-1809 `
+    -b stefanscherer/nanoserver:10.0.17763.253" -Verbose
 
 } else {
   # Linux
@@ -100,7 +100,7 @@ if ($isWindows) {
       "$($image):windows-amd64-$TAG-1809"
     docker manifest annotate "$($image):$TAG" "$($image):linux-arm32v6-$TAG" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):$TAG" "$($image):linux-arm64v8-$TAG" --os linux --arch arm64 --variant v8
-    Retry-Command -Command 'docker manifest push "$($image):$TAG"' -Verbose
+    Retry-Command -Command "docker manifest push $($image):$TAG" -Verbose
 
 #    Write-Host "Pushing manifest $($image):latest"
 #    docker -D manifest create "$($image):latest" `
