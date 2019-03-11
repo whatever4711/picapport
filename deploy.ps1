@@ -4,7 +4,7 @@ function Retry-Command
 {
     param (
     [Parameter(Mandatory=$true)][string]$command,
-    [Parameter(Mandatroy=$true)][string[]]$args,
+    [Parameter(Mandatory=$true)][string[]]$args,
     [Parameter(Mandatory=$false)][int]$retries = 5,
     [Parameter(Mandatory=$false)][int]$secondsDelay = 2
     )
