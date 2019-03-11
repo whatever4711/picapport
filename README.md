@@ -1,4 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/m7ndvfjyf106ivd4?svg=true)](https://ci.appveyor.com/project/whatever4711/picapport)
+[![](https://img.shields.io/docker/pulls/whatever4711/picapport.svg)](https://cloud.docker.com/u/whatever4711/repository/docker/whatever4711/picapport)
+[![](https://img.shields.io/docker/stars/whatever4711/picapport.svg)](https://cloud.docker.com/u/whatever4711/repository/docker/whatever4711/picapport)
 
 [![](https://images.microbadger.com/badges/version/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own image badge on microbadger.com")
