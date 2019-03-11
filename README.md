@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/whatever4711/picapport.svg?style=svg)](https://circleci.com/gh/whatever4711/picapport)
 [![Build status](https://ci.appveyor.com/api/projects/status/m7ndvfjyf106ivd4?svg=true)](https://ci.appveyor.com/project/whatever4711/picapport)
 
 [![](https://images.microbadger.com/badges/version/whatever4711/picapport.svg)](https://microbadger.com/images/whatever4711/picapport "Get your own version badge on microbadger.com")
@@ -14,13 +13,8 @@ Currently, this is a docker image based on Alpine and has [Picapport](http://www
 This multiarch image supports `amd64`, `i386`, `arm32v6`, `arm64v8`, `ppc64le`, and `s390x` on Linux and `amd64` on Windows
 
 ## Starting the container
-### For Linux
+### For Windows & Linux
 `docker run -d --name picapport -p 8080:80 whatever4711/picapport`
-
-
-## Starting the container
-### For Windows
-`docker run -d --name picapport -p 8080:80 whatever4711/picapport:windows-amd64`
 
 Thereafter you can access picapport on http://localhost:8080
 

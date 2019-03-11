@@ -30,10 +30,8 @@ function Retry-Command
 }
 
 if (! (Test-Path Env:\APPVEYOR_REPO_TAG_NAME)) {
-  Write-Host "No version tag detected. Publishing latest."
-  $TAG = 'latest'
-} else {
-  $TAG = $env:APPVEYOR_REPO_TAG_NAME
+  Write-Host "No version tag detected. Skip publishing."
+  exit 0
 }
 
 $image = $env:REPO
@@ -102,20 +100,22 @@ if ($isWindows) {
     docker manifest annotate "$($image):$TAG" "$($image):linux-arm64v8-$TAG" --os linux --arch arm64 --variant v8
     Retry-Command -Command "docker manifest push $($image):$TAG" -Verbose
 
-#    Write-Host "Pushing manifest $($image):latest"
-#    docker -D manifest create "$($image):latest" `
-#      "$($image):linux-amd64-$TAG" `
-#      "$($image):linux-i386-$TAG" `
-#      "$($image):linux-arm-$TAG" `
-#      "$($image):linux-arm64-$TAG" `
-#      "$($image):linux-ppc64le-$TAG" `
-#      "$($image):linux-s390x-$TAG" `
-#      "$($image):windows-amd64-$TAG" `
-#      "$($image):windows-amd64-$TAG-1709" `
-#      "$($image):windows-amd64-$TAG-1803" `
-#      "$($image):windows-amd64-$TAG-1809"
-#    docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$TAG" --os linux --arch arm --variant v6
-#    docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$TAG" --os linux --arch arm64 --variant v8
-#    docker manifest push "$($image):latest"
+    Write-Host "Pushing manifest $($image):latest"
+    docker -D manifest create "$($image):latest" `
+      "$($image):linux-amd64-$TAG" `
+      "$($image):linux-i386-$TAG" `
+      "$($image):linux-arm32v6-$TAG" `
+      "$($image):linux-arm64v8-$TAG" `
+      "$($image):linux-ppc64le-$TAG" `
+      "$($image):linux-s390x-$TAG" `
+      "$($image):windows-amd64-$TAG" `
+      "$($image):windows-amd64-$TAG-1709" `
+      "$($image):windows-amd64-$TAG-1803" `
+      "$($image):windows-amd64-$TAG-1809"
+    docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$TAG" --os linux --arch arm --variant v6
+    docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$TAG" --os linux --arch arm64 --variant v8
+    Retry-Command -Command "docker manifest push $($image):latest" -Verbose
+
+    Invoke-WebRequest -Uri ("https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=") -Method POST
   }
 }
