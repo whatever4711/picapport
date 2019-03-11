@@ -116,6 +116,6 @@ if ($isWindows) {
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
     Retry-Command -Command "docker manifest push $($image):latest" -Verbose
 
-    Invoke-WebRequest -Uri ("https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=") -Method POST
+    $result = Invoke-WebRequest -Uri "https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=" -Method POST
   }
 }
