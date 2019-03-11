@@ -13,7 +13,7 @@ function Retry-Command
 
     while (-not $completed) {
         try {
-            $command 2>&1
+            & $command 2>&1
             Write-Verbose ("Command [{0}] succeeded." -f $command)
             $completed = $true
         } catch {
@@ -55,8 +55,8 @@ $auth64 = [Convert]::ToBase64String($auth)
 
 $os = If ($isWindows) {"windows"} Else {"linux"}
 docker tag picapport "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
-#Retry-Command -Command "docker push $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" -Verbose
-docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
+Retry-Command -Command "docker push $($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" -Verbose
+#docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
 
 if ($isWindows) {
   # Windows
