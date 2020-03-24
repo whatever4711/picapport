@@ -4,8 +4,9 @@ ARG IMAGE=alpine:latest
 FROM alpine AS qemu
 ARG QEMU=x86_64
 ARG VERSION
-ADD https://github.com/multiarch/qemu-user-static/releases/download/v2.11.0/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
-ADD https://www.picapport.de/download/${VERSION}/picapport-headless.jar /picapport-headless.jar
+ARG VERSION=2.11.0
+ADD https://github.com/multiarch/qemu-user-static/releases/download/v{QEMU_VERSION}/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
+ADD https://www.picapport.de/prepare_download.php?dlfile=${VERSION}%2fpicapport-headless.jar /picapport-headless.jar
 RUN chmod +x /usr/bin/qemu-${QEMU}-static
 
 # second image to deliver the picapport container
@@ -37,4 +38,4 @@ LABEL de.whatever4711.picapport.version=$VERSION \
     de.whatever4711.picapport.architecture=$ARCH \
     de.whatever4711.picapport.vcs-ref=$VCS_REF \
     de.whatever4711.picapport.vcs-url=$VCS_URL \
-    de.whatever4711.picapport.build-date=$BUILD_DATE \
+    de.whatever4711.picapport.build-date=$BUILD_DATE
