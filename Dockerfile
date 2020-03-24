@@ -4,7 +4,7 @@ ARG IMAGE=alpine:latest
 FROM alpine AS qemu
 ARG QEMU=x86_64
 ARG QEMU_VERSION=2.11.0
-ARG VERSION
+ARG VERSION=8-2-02
 ADD https://github.com/multiarch/qemu-user-static/releases/download/v{QEMU_VERSION}/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
 ADD https://www.picapport.de/prepare_download.php?dlfile=${VERSION}%2fpicapport-headless.jar /picapport-headless.jar
 ONBUILD RUN chmod +x /usr/bin/qemu-${QEMU}-static
