@@ -7,7 +7,7 @@ ARG QEMU_VERSION=2.11.0
 ARG VERSION
 ADD https://github.com/multiarch/qemu-user-static/releases/download/v{QEMU_VERSION}/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
 ADD https://www.picapport.de/prepare_download.php?dlfile=${VERSION}%2fpicapport-headless.jar /picapport-headless.jar
-RUN chmod +x /usr/bin/qemu-${QEMU}-static
+ONBUILD RUN chmod +x /usr/bin/qemu-${QEMU}-static
 
 # second image to deliver the picapport container
 FROM ${IMAGE}
