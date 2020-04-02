@@ -11,6 +11,8 @@ Write-Host Starting build
 
 echo "Building Picapport v$VERSION at $DATE"
 
+docker version
+
 if ($isWindows){
   docker build -t picapport --build-arg BUILD_DATE=$DATE --build-arg VERSION=$VERSION --build-arg VCS_REF=$VCS_REF --build-arg VCS_URL=$VCS_URL -f Dockerfile.windows .
 } else {
