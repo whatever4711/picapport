@@ -21,4 +21,5 @@ LABEL de.whatever4711.picapport.version=$VERSION \
     de.whatever4711.picapport.architecture=$ARCH \
     de.whatever4711.picapport.vcs-ref=$VCS_REF \
     de.whatever4711.picapport.vcs-url=$VCS_URL \
-    de.whatever4711.picapport.build-date=$BUILD_DATE 
+    de.whatever4711.picapport.build-date=$BUILD_DATE
+  
