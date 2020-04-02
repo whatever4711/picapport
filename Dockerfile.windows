@@ -1,22 +1,16 @@
-FROM winamd64/openjdk:8-nanoserver
+FROM winamd64/openjdk:8-jre-nanoserver
 
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VCS_URL
-ARG VERSION=8-2-02
+ARG VERSION=7-5-01
 ARG ARCH=amd64
 
 ENV PICAPPORT_PORT=80
 
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-
-RUN Invoke-WebRequest $('https://www.picapport.de/prepare_download.php?dlfile=${0}%2fpicapport-headless.jar' -f $env:VERSION) -OutFile 'picapport-headless.jar' -UseBasicParsing ; \
-    $env:PATH = '{0}\bin;{1}' -f $env:PICAPPORT_HOME, $env:PATH ; \
-    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH
+ADD https://www.picapport.de/download/${VERSION}/picapport-headless.jar /picapport-headless.jar
 
 EXPOSE ${PICAPPORT_PORT}
-
-#ENTRYPOINT ["java", "-DTRACE=INFO", "-Duser.home=/opt/picapport", "-cp", "picapport.jar", "de.contecon.picapport.PicApport", "-configfile=/opt/picapport/.picapport/picapport.properties", "-pgui.enabled=false"]
 
 ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-Duser.home=/opt/picapport", "-jar", "picapport-headless.jar"]
 
