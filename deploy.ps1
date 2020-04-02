@@ -74,11 +74,13 @@ if ($isWindows) {
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
+      
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
+
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
     docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
@@ -91,11 +93,13 @@ if ($isWindows) {
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
+
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
+
     docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
     docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
