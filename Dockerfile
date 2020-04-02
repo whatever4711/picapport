@@ -5,7 +5,7 @@ FROM alpine AS qemu
 ARG QEMU=x86_64
 ARG QEMU_VERSION=4.2.0-6
 ARG VERSION=8-2-02
-ADD https://github.com/multiarch/qemu-user-static/releases/download/v{QEMU_VERSION}/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
+ADD https://github.com/multiarch/qemu-user-static/releases/download/v${QEMU_VERSION}/qemu-${QEMU}-static /usr/bin/qemu-${QEMU}-static
 ADD https://www.picapport.de/download/${VERSION}/picapport-headless.jar /picapport-headless.jar
 ONBUILD RUN chmod +x /usr/bin/qemu-${QEMU}-static
 
@@ -38,4 +38,4 @@ LABEL de.whatever4711.picapport.version=$VERSION \
     de.whatever4711.picapport.architecture=$ARCH \
     de.whatever4711.picapport.vcs-ref=$VCS_REF \
     de.whatever4711.picapport.vcs-url=$VCS_URL \
-    de.whatever4711.picapport.build-date=$BUILD_DATE 
+    de.whatever4711.picapport.build-date=$BUILD_DATE
