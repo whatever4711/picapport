@@ -26,8 +26,7 @@ $auth64 = [Convert]::ToBase64String($auth)
 
 $os = If ($isWindows) {"windows"} Else {"linux"}
 docker tag picapport "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
-Retry-Command -Command "docker" -args "push","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" -Verbose
-#docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
+docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
 
 if ($isWindows) {
   # windows
