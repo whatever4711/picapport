@@ -20,7 +20,7 @@ ARG VCS_URL
 ARG VERSION
 
 ENV PICAPPORT_PORT=80
-RUN apk add --update --no-cache tini openjdk1-jre && \
+RUN apk add --update --no-cache tini openjdk11-jre && \
     mkdir -p /opt/picapport/.picapport && \
     printf "%s\n%s\n%s\n" "server.port=$PICAPPORT_PORT" "robot.root.0.path=/srv/photos" "foto.jpg.usecache=2" > /opt/picapport/.picapport/picapport.properties
 
