@@ -29,38 +29,39 @@ docker tag picapport "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
 docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
 
 if ($isWindows) {
+# TODO: Currently no rebasing
   # windows
-  $ErrorActionPreference = 'SilentlyContinue';
-  npm install -g rebase-docker-image
-  $ErrorActionPreference = 'Stop';
-
-  Write-Host "Rebasing image to produce 2016/1607 variant"
-  rebase-docker-image `
-   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
-   -s stefanscherer/nanoserver:1809 `
-   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1607" `
-   -b stefanscherer/nanoserver:sac2016
-
-  Write-Host "Rebasing image to produce 1709 variant"
-  rebase-docker-image `
-   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
-   -s stefanscherer/nanoserver:1809 `
-   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1709" `
-   -b stefanscherer/nanoserver:1709
-
-  Write-Host "Rebasing image to produce 1803 variant"
-  rebase-docker-image `
-   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
-   -s stefanscherer/nanoserver:1809 `
-   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1803" `
-   -b stefanscherer/nanoserver:1803
-
-  Write-Host "Rebasing image to produce 1903 variant"
-  rebase-docker-image `
-   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
-   -s stefanscherer/nanoserver:1809 `
-   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1903" `
-   -b stefanscherer/nanoserver:1903
+#  $ErrorActionPreference = 'SilentlyContinue';
+#  npm install -g rebase-docker-image
+#  $ErrorActionPreference = 'Stop';
+#
+#  Write-Host "Rebasing image to produce 2016/1607 variant"
+#  rebase-docker-image `
+#   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+#   -s stefanscherer/nanoserver:1809 `
+#   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1607" `
+#   -b stefanscherer/nanoserver:sac2016
+#
+#  Write-Host "Rebasing image to produce 1709 variant"
+#  rebase-docker-image `
+#   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+#   -s stefanscherer/nanoserver:1809 `
+#   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1709" `
+#   -b stefanscherer/nanoserver:1709
+#
+#  Write-Host "Rebasing image to produce 1803 variant"
+#  rebase-docker-image `
+#   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+#   -s stefanscherer/nanoserver:1809 `
+#   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1803" `
+#   -b stefanscherer/nanoserver:1803
+#
+#  Write-Host "Rebasing image to produce 1903 variant"
+#  rebase-docker-image `
+#   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+#   -s stefanscherer/nanoserver:1809 `
+#   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1903" `
+#   -b stefanscherer/nanoserver:1903
 
 } else {
   # Linux
@@ -73,11 +74,13 @@ if ($isWindows) {
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903"
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
+      
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903" `
+
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
     docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
@@ -90,11 +93,13 @@ if ($isWindows) {
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903"
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
+
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
+#      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903" `
+
     docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
     docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
