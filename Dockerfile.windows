@@ -1,4 +1,4 @@
-FROM winamd64/openjdk:11-jre-nanoserver
+FROM winamd64/openjdk:8-jre-nanoserver
 
 ARG BUILD_DATE
 ARG VCS_REF
