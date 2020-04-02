@@ -1,34 +1,4 @@
-#$ErrorActionPreference = 'Stop';
-
-function Retry-Command
-{
-    param (
-    [Parameter(Mandatory=$true)][string]$command,
-    [Parameter(Mandatory=$true)][string[]]$args,
-    [Parameter(Mandatory=$false)][int]$retries = 5,
-    [Parameter(Mandatory=$false)][int]$secondsDelay = 2
-    )
-
-    $retrycount = 0
-    $completed = $false
-
-    while (-not $completed) {
-        try {
-            & $command @args 2>&1
-            Write-Verbose ("Command [{0}] succeeded." -f $command)
-            $completed = $true
-        } catch {
-            if ($retrycount -ge $retries) {
-                Write-Verbose ("Command [{0}] failed the maximum number of {1} times." -f $command, $retrycount)
-                throw
-            } else {
-                Write-Verbose ("Command [{0}] failed. Retrying in {1} seconds." -f $command, $secondsDelay)
-                Start-Sleep $secondsDelay
-                $retrycount++
-            }
-        }
-    }
-}
+$ErrorActionPreference = 'Stop';
 
 #if (! (Test-Path Env:\APPVEYOR_REPO_TAG_NAME)) {
 #  Write-Host "No version tag detected. Skip publishing."
@@ -60,18 +30,38 @@ Retry-Command -Command "docker" -args "push","$($image):$os-$env:ARCH-$env:APPVE
 #docker push "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME"
 
 if ($isWindows) {
-  # Windows
-  Write-Host "Rebasing image to produce 1709 variant"
+  # windows
+  $ErrorActionPreference = 'SilentlyContinue';
   npm install -g rebase-docker-image
-  Retry-Command -Command "rebase-docker-image" -args "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME","-t","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1709","-b","microsoft/nanoserver:1709" -Verbose
+  $ErrorActionPreference = 'Stop';
+
+  Write-Host "Rebasing image to produce 2016/1607 variant"
+  rebase-docker-image `
+   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+   -s stefanscherer/nanoserver:1809 `
+   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1607" `
+   -b stefanscherer/nanoserver:sac2016
+
+  Write-Host "Rebasing image to produce 1709 variant"
+  rebase-docker-image `
+   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+   -s stefanscherer/nanoserver:1809 `
+   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1709" `
+   -b stefanscherer/nanoserver:1709
 
   Write-Host "Rebasing image to produce 1803 variant"
-  npm install -g rebase-docker-image
-  Retry-Command -Command "rebase-docker-image" -args "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME","-t","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1803","-b","microsoft/nanoserver:1803" -Verbose
+  rebase-docker-image `
+   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+   -s stefanscherer/nanoserver:1809 `
+   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1803" `
+   -b stefanscherer/nanoserver:1803
 
-  Write-Host "Rebasing image to produce 1809 variant"
-  npm install -g rebase-docker-image
-  Retry-Command -Command "rebase-docker-image" -args "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME","-s","microsoft/nanoserver:sac2016","-t","$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1809","-b","stefanscherer/nanoserver:10.0.17763.253" -Verbose
+  Write-Host "Rebasing image to produce 1903 variant"
+  rebase-docker-image `
+   "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME" `
+   -s stefanscherer/nanoserver:1809 `
+   -t "$($image):$os-$env:ARCH-$env:APPVEYOR_REPO_TAG_NAME-1903" `
+   -b stefanscherer/nanoserver:1903
 
 } else {
   # Linux
@@ -84,13 +74,14 @@ if ($isWindows) {
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1809"
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903"
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):$env:APPVEYOR_REPO_TAG_NAME" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
-    Retry-Command -Command "docker" -args "manifest","push","$($image):$env:APPVEYOR_REPO_TAG_NAME" -Verbose
+    docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
 
     Write-Host "Pushing manifest $($image):latest"
     docker -D manifest create "$($image):latest" `
@@ -100,13 +91,14 @@ if ($isWindows) {
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
-      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1809"
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
+      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903"
     docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
-    Retry-Command -Command "docker" -args "manifest","push","$($image):latest" -Verbose
+    docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
 
     $result = Invoke-WebRequest -Uri "https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=" -Method POST
   }
