@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop';
+#$ErrorActionPreference = 'Stop';
 
 function Retry-Command
 {
@@ -30,10 +30,10 @@ function Retry-Command
     }
 }
 
-if (! (Test-Path Env:\APPVEYOR_REPO_TAG_NAME)) {
-  Write-Host "No version tag detected. Skip publishing."
-  exit 0
-}
+#if (! (Test-Path Env:\APPVEYOR_REPO_TAG_NAME)) {
+#  Write-Host "No version tag detected. Skip publishing."
+#  exit 0
+#}
 
 $image = $env:REPO
 
