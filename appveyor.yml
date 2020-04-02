@@ -14,15 +14,15 @@ environment:
 
 matrix:
   exclude:
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       ARCH: i386
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       ARCH: arm32v6
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       ARCH: arm64v8
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       ARCH: ppc64le
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       ARCH: s390x
 
 build_script:
