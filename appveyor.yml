@@ -1,6 +1,6 @@
 version: 1.0.{build}
 image:
-- Visual Studio 2019
+- Visual Studio 2017
 - Ubuntu
 
 environment:
@@ -14,15 +14,15 @@ environment:
 
 matrix:
   exclude:
-    - image: Visual Studio 2019
+    - image: Visual Studio 2017
       ARCH: i386
-    - image: Visual Studio 2019
+    - image: Visual Studio 2017
       ARCH: arm32v6
-    - image: Visual Studio 2019
+    - image: Visual Studio 2017
       ARCH: arm64v8
-    - image: Visual Studio 2019
+    - image: Visual Studio 2017
       ARCH: ppc64le
-    - image: Visual Studio 2019
+    - image: Visual Studio 2017
       ARCH: s390x
 
 build_script:
