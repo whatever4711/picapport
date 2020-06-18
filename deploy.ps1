@@ -75,7 +75,7 @@ if ($isWindows) {
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME"
-      
+
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1607" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1709" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
@@ -102,7 +102,7 @@ if ($isWindows) {
 
     docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
-    docker manifest push "$($image):$env:APPVEYOR_REPO_TAG_NAME"
+    docker manifest push "$($image):latest"
 
     $result = Invoke-WebRequest -Uri "https://hooks.microbadger.com/images/whatever4711/picapport/h54qEvKKiyj8evp5FLbwRCouqks=" -Method POST
   }
