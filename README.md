@@ -49,6 +49,10 @@ services:
     restart: always
     expose:
       - 80
+    environment:
+      - Xms=512m
+      - Xmx=1g
+      - PICAPPORT_LANG=de
     networks:
       - backend
     volumes:
