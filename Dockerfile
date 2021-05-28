@@ -26,7 +26,7 @@ ENV PICAPPORT_LOG=WARNING
 ENV XMS=256m
 ENV XMX=2048m
 
-RUN apk add --update --no-cache tini openjdk11-jre && \
+RUN apk add --update --no-cache tini openjdk10-jre && \
     mkdir -p /opt/picapport/.picapport && \
     printf "%s\n%s\n%s\n" "server.port=$PICAPPORT_PORT" "robot.root.0.path=/srv/photos" "foto.jpg.usecache=2" > /opt/picapport/.picapport/picapport.properties
 
