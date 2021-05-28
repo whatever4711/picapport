@@ -69,8 +69,8 @@ if ($isWindows) {
     # The last in the build matrix
     docker -D manifest create "$($image):$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):linux-i386-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" `
+#      "$($image):linux-i386-$env:APPVEYOR_REPO_TAG_NAME" `
+#      "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
@@ -88,8 +88,8 @@ if ($isWindows) {
     Write-Host "Pushing manifest $($image):latest"
     docker -D manifest create "$($image):latest" `
       "$($image):linux-amd64-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):linux-i386-$env:APPVEYOR_REPO_TAG_NAME" `
-      "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" `
+#      "$($image):linux-i386-$env:APPVEYOR_REPO_TAG_NAME" `
+#      "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-ppc64le-$env:APPVEYOR_REPO_TAG_NAME" `
       "$($image):linux-s390x-$env:APPVEYOR_REPO_TAG_NAME" `
@@ -100,7 +100,7 @@ if ($isWindows) {
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1803" `
 #      "$($image):windows-amd64-$env:APPVEYOR_REPO_TAG_NAME-1903" `
 
-    docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
+#    docker manifest annotate "$($image):latest" "$($image):linux-arm32v6-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm --variant v6
     docker manifest annotate "$($image):latest" "$($image):linux-arm64v8-$env:APPVEYOR_REPO_TAG_NAME" --os linux --arch arm64 --variant v8
     docker manifest push "$($image):latest"
 

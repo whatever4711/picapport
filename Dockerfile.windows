@@ -1,4 +1,4 @@
-FROM winamd64/openjdk:16-jre-nanoserver
+FROM openjdk:16.0.1
 
 ARG BUILD_DATE
 ARG VCS_REF
