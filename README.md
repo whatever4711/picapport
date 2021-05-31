@@ -35,13 +35,16 @@ In this file we specified, e.g., the path for picapport to search for the pictur
 
 - Mount your configuration with: `-v $PWD/config:/opt/picapport/.picapport`
 - Mount your photos with: `-v /path/to/your/fotos:/srv/photos`
-- Eventually mount the cache with `-v /path/to/cache:/srv/cache`
+- Eventually mount the cache with `-v /path/to/cache:/srv/cache` or use a docker volume
 
 `docker run -d --name picapport -p 8080:80 -v $PWD/config:/opt/picapport/.picapport -v /path/to/fotos:/srv/photos -v /path/to/cache:/srv/cache whatever4711/picapport`
 
 ## Easier setup with docker-compose
 ```YAML
 version: '3'
+
+volumes:
+  cache:
 
 services:
   picapport:
@@ -50,13 +53,14 @@ services:
     expose:
       - 80
     environment:
-      - Xms=512m
-      - Xmx=1g
+      - XMS=512m
+      - XMX=1g
       - PICAPPORT_LANG=de
     networks:
       - backend
     volumes:
       - /path/to/your/configuration:/opt/picapport/.picapport
       - /path/to/your/fotos:/srv/photos
+      - cache:/srv/cache
 ```
 Run it with `docker-compose up -d`
