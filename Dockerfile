@@ -22,10 +22,9 @@ ARG VCS_URL
 ARG VERSION
 
 ENV PICAPPORT_PORT=80
-ENV PICAPPORT_LANG=en
-ENV PICAPPORT_LOG=WARNING
+ENV DTRACE=WARNING
 ENV XMS=256m
-ENV XMX=2048m
+ENV XMX=1024m
 
 RUN apk add --update --no-cache tini openjdk8-jre && \
     mkdir -p /opt/picapport/.picapport && \
@@ -35,7 +34,7 @@ COPY --from=qemu /picapport-headless.jar /opt/picapport/picapport-headless.jar
 WORKDIR /opt/picapport
 EXPOSE ${PICAPPORT_PORT}
 
-ENTRYPOINT tini -- java -Xms$XMS -Xmx$XMX -DTRACE=$PICAPPORT_LOG -Duser.language=$PICAPPORT_LANG -Duser.home=/opt/picapport -jar picapport-headless.jar
+ENTRYPOINT tini -- java -Xms$XMS -Xmx$XMX -DTRACE=$DTRACE -Duser.home=/opt/picapport -jar picapport-headless.jar
 
 LABEL de.whatever4711.picapport.version=$VERSION \
     de.whatever4711.picapport.name="PicApport" \

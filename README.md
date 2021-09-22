@@ -55,7 +55,8 @@ services:
     environment:
       - XMS=512m
       - XMX=1g
-      - PICAPPORT_LANG=de
+      - DTRACE=DEBUG
+      - LC_ALL=de_DE.UTF-8
     networks:
       - backend
     volumes:
