@@ -26,7 +26,8 @@ ENV DTRACE=WARNING
 ENV XMS=256m
 ENV XMX=1024m
 
-RUN apk add --update --no-cache tini openjdk8-jre && \
+RUN apk add --update --no-cache tini && \
+    apk add --update --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing openjdk16-jre && \
     mkdir -p /opt/picapport/.picapport && \
     printf "%s\n%s\n%s\n" "server.port=$PICAPPORT_PORT" "robot.root.0.path=/srv/photos" "foto.jpg.usecache=2" > /opt/picapport/.picapport/picapport.properties
 

@@ -6,18 +6,18 @@ image:
 environment:
   matrix:
     - ARCH: amd64
-    - ARCH: arm32v6
+#    - ARCH: arm32v6
     - ARCH: arm64v8
-    - ARCH: i386
+#    - ARCH: i386
     - ARCH: ppc64le
     - ARCH: s390x
 
 matrix:
   exclude:
-    - image: Visual Studio 2019
-      ARCH: i386
-    - image: Visual Studio 2019
-      ARCH: arm32v6
+#    - image: Visual Studio 2019
+#      ARCH: i386
+#    - image: Visual Studio 2019
+#      ARCH: arm32v6
     - image: Visual Studio 2019
       ARCH: arm64v8
     - image: Visual Studio 2019
